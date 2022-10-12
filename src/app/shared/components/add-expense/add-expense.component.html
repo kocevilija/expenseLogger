@@ -6,4 +6,30 @@
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="addExpenseForm">
+
+    <ion-item>
+      <ion-label>Amount</ion-label>
+      <ion-input id="first-name" type="text" placeholder="Type amount" formControlName="amount"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Description</ion-label>
+      <ion-textarea id="last-name" type="text" placeholder="Type description" formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Select type</ion-label>
+      <ion-select cancelText="Cancel" okText="Ok" formControlName="type" interface="popover">
+        <ion-select-option>General</ion-select-option>
+        <ion-select-option>Grocery</ion-select-option>
+        <ion-select-option>Shoping</ion-select-option>
+        <ion-select-option>Coffee</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+        <ion-button color="primary" expand="block" fill="solid">Add</ion-button>
+        <ion-button color="primary" expand="block" fill="solid">Cancel</ion-button>
+  
+  </form>
 </ion-content>
