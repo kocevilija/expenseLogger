@@ -9,26 +9,24 @@ export class StorageService {
 
   constructor() { }
 
-// JSON "set" example
-  async setObject(key: string, value: any) {
+  async saveToLocalStorage(key: string, value: any) {
     await Preferences.set({
       key: key,
       value: JSON.stringify(value)
     });
   }
 
-  // JSON "get" example
-  async getObject(key: string): Promise<{value: any}> {
+  async getFromLocalStorage(key: string): Promise<any> {
     const ret = await Preferences.get({key});
     return JSON.parse(ret.value);
   }
   
-  async removeItem(key: string)
+  async removeFromLocalStorage(key: string): Promise<void>
   {
-    await Preferences.remove({key});
+    return await Preferences.remove({key});
   }
 
-  async clear()
+  async clearLocalStorage(): Promise<void>
   {
     await Preferences.clear();
   }
