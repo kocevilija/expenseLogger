@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { BehaviorSubject, SubscriptionLike } from 'rxjs';
+import { Expense } from 'src/app/interfaces/expense';
+import { DataService } from 'src/app/services/data/data.service';
 import { AddExpenseComponent } from 'src/app/shared/components/add-expense/add-expense.component';
 
 @Component({
@@ -7,11 +10,36 @@ import { AddExpenseComponent } from 'src/app/shared/components/add-expense/add-e
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  constructor(private modalController: ModalController) { }
+  expenses: Expense[];
+  subscription: SubscriptionLike;
+  constructor(
+    private modalController: ModalController,
+    private dataService: DataService) { 
+      this.expenses = []
+    }
+  ngOnDestroy(): void {
+    
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.subscription =
+    this.dataService.getExpenseSubscription().subscribe({
+      next: (value) => {
+        console.log(value);
+        if(value != null)
+          this.expenses.push(value);
+      },
+      error: (err) => {
+        
+      },
+      complete: () => {
+        
+      },
+    });
+  }
 
   async presentModal() {
     const modal = await this.modalController.create({
