@@ -10,8 +10,14 @@ export class DataService {
   private readonly _expense: BehaviorSubject<Expense>;
 
   constructor() {
-    this._expense = new BehaviorSubject<Expense>(null);
-   }
+    this._expense = new BehaviorSubject<Expense>(
+      {
+        amount: 50, 
+        description:"Demo expense", 
+        type: "Demo type",
+        createdOn: new Date()
+   });
+  }
 
   async getExpense(): Promise<Expense>
   {
