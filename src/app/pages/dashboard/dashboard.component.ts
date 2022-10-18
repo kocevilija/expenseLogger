@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { IonDatetime, ModalController } from '@ionic/angular';
 import { BehaviorSubject, SubscriptionLike } from 'rxjs';
 import { Expense } from 'src/app/interfaces/expense';
 import { ActionService } from 'src/app/services/action/action.service';
 import { DataService } from 'src/app/services/data/data.service';
+import { DatetimeService } from 'src/app/services/datetime/datetime.service';
 import { AddExpenseComponent } from 'src/app/shared/components/add-expense/add-expense.component';
 
 @Component({
@@ -15,12 +16,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   expenses: Expense[];
   subscription: SubscriptionLike;
-  constructor(
+  todayDate: Date;
+  installDate: Date;
+  selectedDate: Date;
+
+
+  constructor(  
     private modalController: ModalController,
     private dataService: DataService,
-    private actionService: ActionService) { 
-      this.expenses = [];
+    private actionService: ActionService,
+    private datetimeService: DatetimeService) {
+
       this.actionService.getTodaysExpansesFromLocal().then(val => this.expenses = val);
+      this.todayDate = this.datetimeService.todayDate;
+      this.installDate = this.datetimeService.installDate;
+      this.selectedDate = this.datetimeService.selectedDate;
     }
   ngOnDestroy(): void {
     
@@ -28,19 +38,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.selectedDate = this.datetimeService.getCurrentDate();
     this.subscription =
     this.dataService.getExpenseSubscription().subscribe({
-      next: (value) => {
-        console.log(value);
-        if(value != null)
-          this.expenses.push(value);
-      },
-      error: (err) => {
+      next: (expense) => {
+        if(!this.expenses)
+        {
+          this.expenses = [];
+        }
+        if(expense != null)
+        {
+          this.expenses.push(expense);
+        }
         
       },
-      complete: () => {
-        
-      },
+      error: (err) => {},
+      complete: () => {},
     });
   }
 
@@ -50,6 +63,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     
     return await modal.present();
+  }
+
+  changeSelectedDate(date: string)
+  {
+    this.datetimeService.selectedDate = this.datetimeService.createDateFromString(date);
+    this.selectedDate = this.datetimeService.selectedDate;
+  }
+
+  setCurrentToTodayDate()
+  {
+    this.todayDate = this.datetimeService.getCurrentDate();
+    this.selectedDate = this.datetimeService.getCurrentDate();
   }
 
 }

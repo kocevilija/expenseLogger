@@ -13,7 +13,7 @@ export class StorageService {
 
   async saveExpenseToLocal(expense: Expense): Promise<void>
   {
-    const key = this.datetimeService.getDateTimeISO();
+    const key = this.datetimeService.getDateTimeISO(expense.createdOn);
     let todaysExpenses: Expense[] = [];
     this.getFromLocalStorage(key)
     .then((expenses: Expense[]) => {
@@ -43,7 +43,7 @@ export class StorageService {
     });
   }
 
-  async saveToLocalStorage(key: string, value: Expense[]) {
+  async saveToLocalStorage(key: string, value: any) {
     await Preferences.set({
       key: key,
       value: JSON.stringify(value)

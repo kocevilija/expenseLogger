@@ -8,7 +8,10 @@
   <ion-card>
 
     <ion-card-header color="primary">
-      <ion-title class="ion-text-center">Total: 500$</ion-title>
+      <ion-card-title>Total: 500$</ion-card-title>
+      <ion-card-subtitle>
+        {{ selectedDate | date }}
+      </ion-card-subtitle>
     </ion-card-header>
 
     <!-- <ion-card-content>
@@ -18,10 +21,24 @@
     <ion-footer>
       <ion-row>
         <ion-col size="3">
-          <ion-button expand="full" fill="clear">Today</ion-button>
+          <ion-button expand="full" fill="clear" (click)="setCurrentToTodayDate()">Today</ion-button>
         </ion-col>
         <ion-col size="3">
-          <ion-button expand="full" fill="clear">Date</ion-button>
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime 
+                #selected
+                id="datetime"
+                presentation="date"
+                [value]="todayDate.toISOString()"
+                color="primary"
+                [min]="2020-01-01"
+                [max]="todayDate.toISOString()"
+                (ionChange)="changeSelectedDate(selected.value)">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
         </ion-col>
         <ion-col size="3">
           <ion-button expand="full" fill="clear">Category</ion-button>
