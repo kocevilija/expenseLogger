@@ -7,30 +7,24 @@ import { Expense } from 'src/app/interfaces/expense';
 })
 export class DataService {
 
-  private readonly _expense: BehaviorSubject<Expense>;
+  private readonly _expenses: BehaviorSubject<Expense[]>;
 
   constructor() {
-    this._expense = new BehaviorSubject<Expense>(
-      {
-        amount: 50, 
-        description:"Demo expense", 
-        type: "Demo type",
-        createdOn: new Date()
-   });
+    this._expenses = new BehaviorSubject<Expense[]>(null);
   }
 
-  async getExpense(): Promise<Expense>
+  async getExpenses(): Promise<Expense[]>
   {
-    return this._expense.getValue();
+    return this._expenses.getValue();
   }
 
-  async setExpense(expenses: Expense): Promise<void>
+  async setExpenses(expenses: Expense[]): Promise<void>
   {
-    return this._expense.next(expenses);
+    return this._expenses.next(expenses);
   }
 
-  getExpenseSubscription(): BehaviorSubject<Expense>
+  getExpenseSubscription(): BehaviorSubject<Expense[]>
   {
-    return this._expense;
+    return this._expenses;
   }
 }

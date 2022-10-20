@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { Expense } from 'src/app/interfaces/expense';
+import { DataService } from '../data/data.service';
 import { DatetimeService } from '../datetime/datetime.service';
 
 
@@ -9,24 +10,29 @@ import { DatetimeService } from '../datetime/datetime.service';
 })
 export class StorageService {
 
-  constructor(private datetimeService: DatetimeService) { }
+  constructor(
+    private datetimeService: DatetimeService,
+    private dataService: DataService) { }
 
   async saveExpenseToLocal(expense: Expense): Promise<void>
   {
     const key = this.datetimeService.getDateTimeISO(expense.createdOn);
-    let todaysExpenses: Expense[] = [];
-    this.getFromLocalStorage(key)
+    let expenseList: Expense[] = [];
+    return this.getFromLocalStorage(key)
     .then((expenses: Expense[]) => {
       if(expenses == null){
-        todaysExpenses.push(expense);
+        expenseList.push(expense);
       }
       else{
-        todaysExpenses = expenses;
-        todaysExpenses.push(expense);
+        expenseList = expenses;
+        expenseList.push(expense);
       }
 
     }).then(() => {
-      this.saveToLocalStorage(key, todaysExpenses)
+      this.saveToLocalStorage(key, expenseList).then(() => 
+      {
+        this.dataService.setExpenses(expenseList);
+      })
     })
     .catch(err => console.log(err));
 
@@ -44,7 +50,7 @@ export class StorageService {
   }
 
   async saveToLocalStorage(key: string, value: any) {
-    await Preferences.set({
+    return await Preferences.set({
       key: key,
       value: JSON.stringify(value)
     });

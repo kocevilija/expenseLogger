@@ -16,9 +16,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   expenses: Expense[];
   subscription: SubscriptionLike;
-  todayDate: Date;
   installDate: Date;
   selectedDate: Date;
+  todayDate: Date;
+  dateSubscription: SubscriptionLike;
 
 
   constructor(  
@@ -28,29 +29,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private datetimeService: DatetimeService) {
 
       this.actionService.getTodaysExpansesFromLocal().then(val => this.expenses = val);
-      this.todayDate = this.datetimeService.todayDate;
       this.installDate = this.datetimeService.installDate;
-      this.selectedDate = this.datetimeService.selectedDate;
     }
-  ngOnDestroy(): void {
+  ngOnDestroy(): void 
+  {
     
   }
 
-  ngOnInit() {
-
-    this.selectedDate = this.datetimeService.getCurrentDate();
+  ngOnInit() 
+  {
+    this.todayDate = this.datetimeService.getCurrentDate();
+    this.dateSubscription = this.datetimeService.getSelectedDateSubscriptin().subscribe(
+      {
+        next: (date: Date) => {
+          this.selectedDate = date;
+        },
+        error: (err) => {},
+        complete: () => {},
+      }
+    )
     this.subscription =
     this.dataService.getExpenseSubscription().subscribe({
       next: (expense) => {
-        if(!this.expenses)
-        {
-          this.expenses = [];
-        }
         if(expense != null)
         {
-          this.expenses.push(expense);
+          this.expenses = expense;
         }
-        
+        else
+          this.expenses = [];
+        console.log("exp: " + expense);
       },
       error: (err) => {},
       complete: () => {},
@@ -67,14 +74,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   changeSelectedDate(date: string)
   {
-    this.datetimeService.selectedDate = this.datetimeService.createDateFromString(date);
-    this.selectedDate = this.datetimeService.selectedDate;
+    this.selectedDate = this.datetimeService.createDateFromString(date);
+    this.datetimeService.setSelectedDate(date).then(() => 
+    {
+      this.actionService.emitExpensesByDateFromLocal(this.selectedDate);
+    });
   }
 
   setCurrentToTodayDate()
   {
-    this.todayDate = this.datetimeService.getCurrentDate();
-    this.selectedDate = this.datetimeService.getCurrentDate();
+    this.datetimeService.setSelectedDate(this.datetimeService.getCurrentDate()).then(() => 
+    {
+      this.actionService.emitExpensesByDateFromLocal(this.selectedDate);
+    });
   }
 
 }

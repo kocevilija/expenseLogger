@@ -18,9 +18,7 @@ export class ActionService {
 
    async createExpense(expense: Expense): Promise<void>
    {
-    let key = this.dateTimeService.getDateTimeISO(expense.createdOn);
-    this.storageService.saveExpenseToLocal(expense);
-    return this.dataService.setExpense(expense);
+    return await this.storageService.saveExpenseToLocal(expense).then().catch();
    }
 
    async getTodaysExpansesFromLocal(): Promise<Expense[]> {
@@ -28,5 +26,13 @@ export class ActionService {
     {
       return expenses;
     });
+   }
+
+   async emitExpensesByDateFromLocal(date: Date): Promise<void>
+   {
+    return await this.storageService.getExpensesFromLocal(date).then(exp =>
+      {
+        this.dataService.setExpenses(exp);
+      })
    }
 }
