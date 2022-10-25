@@ -66,8 +66,11 @@ export class StorageService {
     return await Preferences.remove({key});
   }
 
-  async clearLocalStorage(): Promise<void>
+  async clearLocalStorage(isReset?: boolean): Promise<void>
   {
+    if(isReset){
+      this.dataService.setExpenses([]);
+    }
     await Preferences.clear();
   }
 
