@@ -7,7 +7,7 @@
 
 <ion-content>
   <form [formGroup]="addExpenseForm">
-
+    <ion-label color="danger" *ngIf="addExpenseForm.controls.amount.invalid && addExpenseForm.controls.amount.touched">Amount is invalid</ion-label>
     <ion-item>
       <ion-label>Amount</ion-label>
       <ion-input type="number" placeholder="Amount" inputmode="decimal" formControlName="amount" required></ion-input>

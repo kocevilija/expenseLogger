@@ -34,9 +34,6 @@ export class AddExpenseComponent implements OnInit {
 
   initCreateExpense(): void
   {
-
-    
-
     this.dateTimeService.getSelectedDate().then(val => 
       {
         this.expenseForm = 
