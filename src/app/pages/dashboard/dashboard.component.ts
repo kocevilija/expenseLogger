@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IonDatetime, ModalController } from '@ionic/angular';
+import { ActionSheetController, IonDatetime, ModalController } from '@ionic/angular';
 import { BehaviorSubject, SubscriptionLike } from 'rxjs';
 import { ExpenseTypes } from 'src/app/constants/constants';
 import { Expense } from 'src/app/interfaces/expense';
@@ -22,18 +22,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   todayDate: Date;
   dateSubscription: SubscriptionLike;
   expenseTypes: any;
-  selected
+  totalSubscription: SubscriptionLike;
+  todaysTotal: number;
 
 
   constructor(  
     private modalController: ModalController,
     private dataService: DataService,
     private actionService: ActionService,
-    private datetimeService: DatetimeService) {
+    private datetimeService: DatetimeService,
+    private actionSheetCtrl: ActionSheetController) {
 
-      this.actionService.getTodaysExpansesFromLocal().then(val => this.expenses = val);
       this.installDate = this.datetimeService.installDate;
       this.expenseTypes = ExpenseTypes;
+      this.todaysTotal = null;
+
     }
   ngOnDestroy(): void 
   {
@@ -42,6 +45,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
+    this.totalSubscription = this.dataService.getTodayTotalExpenseSub().subscribe(
+      {
+        next: (total: number) => {
+          this.todaysTotal = total;
+        },
+        error: (err) => {},
+        complete: () => {},
+      }
+    );
     this.expenseTypes = ExpenseTypes;
     this.todayDate = this.datetimeService.getCurrentDate();
     this.dateSubscription = this.datetimeService.getSelectedDateSubscriptin().subscribe(
@@ -92,6 +104,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
     {
       this.actionService.emitExpensesByDateFromLocal(this.selectedDate);
     });
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Filter by',
+      buttons: [
+        {
+          text: 'Price',
+          data: {
+            action: 'delete',
+          },
+        },
+        {
+          text: 'Recent',
+          data: {
+            action: 'share',
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
   }
 
 }

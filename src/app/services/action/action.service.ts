@@ -13,7 +13,7 @@ export class ActionService {
     private dataService: DataService,
     private storageService: StorageService,
     private dateTimeService: DatetimeService) {
-
+      this.getTodaysExpansesFromLocal();
    }
 
    async createExpense(expense: Expense): Promise<void>
@@ -21,10 +21,10 @@ export class ActionService {
     return await this.storageService.saveExpenseToLocal(expense).then().catch();
    }
 
-   async getTodaysExpansesFromLocal(): Promise<Expense[]> {
+   async getTodaysExpansesFromLocal(): Promise<void> {
     return await this.storageService.getExpensesFromLocal().then((expenses: Expense[]) => 
     {
-      return expenses;
+      this.dataService.setExpenses(expenses);
     });
    }
 

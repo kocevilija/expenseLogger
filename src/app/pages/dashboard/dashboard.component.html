@@ -3,7 +3,7 @@
     <ion-card class="ion-no-margin">
 
       <ion-card-header color="primary">
-        <ion-card-title>Total: 500$</ion-card-title>
+        <ion-card-title>Total: {{todaysTotal}}$</ion-card-title>
         <ion-card-subtitle>
           {{ selectedDate | date }}
         </ion-card-subtitle>
@@ -33,7 +33,7 @@
             </ion-modal>
           </ion-col>
           <ion-col size="3">
-            <ion-button fill="solid" (click)="selectedType.open()">Categ.</ion-button>
+            <ion-button fill="solid" (click)="selectedType.open()">Type</ion-button>
               <ion-item hidden #sm>
                 <ion-select 
                   #selectedType
@@ -47,7 +47,7 @@
             
           </ion-col>
           <ion-col size="3">
-            <ion-button fill="solid">Filter</ion-button>
+            <ion-button fill="solid" (click)="presentActionSheet()">Filter</ion-button>
           </ion-col>
         </ion-row>
       </ion-footer>
@@ -87,7 +87,7 @@
   </ion-card>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="presentModal()">
+    <ion-fab-button (click)="presentModal()" color="success">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
