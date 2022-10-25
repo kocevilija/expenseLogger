@@ -34,6 +34,18 @@
           </ion-col>
           <ion-col size="3">
             <ion-button fill="solid">Categ.</ion-button>
+              <ion-item>
+                <ion-label>Select type</ion-label>
+                <ion-select 
+                  #selectedType
+                  interface="popover">
+                  <ion-select-option
+                    *ngFor="let type of expenseTypes | keyvalue" 
+                    value="{{type.value}}"
+                    >{{type.value}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+            
           </ion-col>
           <ion-col size="3">
             <ion-button fill="solid">Filter</ion-button>

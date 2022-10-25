@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonDatetime, ModalController } from '@ionic/angular';
 import { BehaviorSubject, SubscriptionLike } from 'rxjs';
+import { ExpenseTypes } from 'src/app/constants/constants';
 import { Expense } from 'src/app/interfaces/expense';
 import { ActionService } from 'src/app/services/action/action.service';
 import { DataService } from 'src/app/services/data/data.service';
@@ -20,6 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedDate: Date;
   todayDate: Date;
   dateSubscription: SubscriptionLike;
+  expenseTypes: any;
+  selected
 
 
   constructor(  
@@ -30,6 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       this.actionService.getTodaysExpansesFromLocal().then(val => this.expenses = val);
       this.installDate = this.datetimeService.installDate;
+      this.expenseTypes = ExpenseTypes;
     }
   ngOnDestroy(): void 
   {
@@ -38,6 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
+    this.expenseTypes = ExpenseTypes;
     this.todayDate = this.datetimeService.getCurrentDate();
     this.dateSubscription = this.datetimeService.getSelectedDateSubscriptin().subscribe(
       {
@@ -90,3 +95,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 }
+ 
