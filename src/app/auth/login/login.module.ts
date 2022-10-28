@@ -14,7 +14,7 @@ import { AppFormsModule } from 'src/app/core/modules/app-forms/app-forms.module'
     CommonModule,
     IonicModule,
     LoginPageRoutingModule,
-    AppFormsModule
+    AppFormsModule,
   ],
   declarations: [LoginPage]
 })

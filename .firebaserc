@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "expense-logger-7697a": {
+      "hosting": {
+        "app": [
+          "expense-logger-7697a"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "expense-logger-7697a"
+  }
+}
