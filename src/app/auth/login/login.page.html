@@ -1,0 +1,28 @@
+<ion-header>
+</ion-header>
+
+<ion-content>
+  <ion-card-header>
+    <ion-card-title class="ion-text-center">Login</ion-card-title>
+  </ion-card-header>
+  <ion-card>
+    <ion-card-content>
+      <ion-item-group>
+        <ion-item lines="full">
+          <ion-input placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-input placeholder="Password" type="password"></ion-input>
+
+        </ion-item>
+      </ion-item-group>
+
+      <ion-button expand="block">Login</ion-button>
+      <ion-item lines="none">
+        <ion-label routerLink='../forgotPassword' color="danger">Forgot password?</ion-label>
+        <ion-label class="ion-text-end" [classList]="" routerLink='../register' color="primary">Register</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  
+</ion-content>
