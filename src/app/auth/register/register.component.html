@@ -7,22 +7,24 @@
   </ion-card-header>
   <ion-card >
     <ion-card-content>
-      <ion-item-group>
-        <ion-item lines="full">
-          <ion-input placeholder="Name"></ion-input>
-        </ion-item>
-        <ion-item lines="full">
-          <ion-input placeholder="Email"></ion-input>
-        </ion-item>
-        <ion-item lines="full">
-          <ion-input placeholder="Password" type="password"></ion-input>
-        </ion-item>
-        <ion-item lines="full">
-          <ion-input placeholder="Confirm Password" type="password"></ion-input>
-        </ion-item> 
-      </ion-item-group>
+      <form [formGroup]="registerForm">
+        <ion-item-group>
+          <ion-item lines="full">
+            <ion-input placeholder="Name" formControlName="name"></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-input placeholder="Email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-input placeholder="Confirm Password" type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item> 
+        </ion-item-group>
+      </form>
 
-      <ion-button expand="block">Submit</ion-button>
+      <ion-button expand="block" type="submit" [disabled]="!registerForm.valid">Submit</ion-button>
       <ion-item class="ion-text-end" lines="none">
         <ion-label routerLink="../login" color="primary">Login</ion-label>
       </ion-item>
