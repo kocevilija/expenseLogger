@@ -1,5 +1,14 @@
 export enum StorageKeys {
-    INSTALL_DATE = 'INSTALL_DATE'
+    INSTALL_DATE = 'INSTALL_DATE',
+    ACTIVE_USER = 'ACTIVE_USER',
+}
+
+export enum AppRoutes {
+    LOGIN = '/auth/login',
+    REGISTER = '/auth/register',
+    TABS = '/tabs',
+    AUTH = '/auth'
+
 }
 
 export enum ExpenseTypes {

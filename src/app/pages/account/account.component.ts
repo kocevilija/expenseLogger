@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AppRoutes, StorageKeys } from 'src/app/constants/constants';
 import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
@@ -10,13 +13,19 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 export class AccountComponent implements OnInit {
 
   constructor(private storageService: StorageService,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private fireAuth: AngularFireAuth,
+    private router: Router) { }
 
   ngOnInit() {}
 
   resetAppData() {
-    this.storageService.clearLocalStorage(true).then(() => 
-    this.presentResetAlert());
+    this.storageService.clearLocalStorage(true).then(() => {
+      this.fireAuth.signOut();
+      this.presentResetAlert();
+      this.router.navigateByUrl(AppRoutes.LOGIN);
+      
+  });
   }
 
   async presentResetAlert() {
