@@ -33,6 +33,7 @@ export class LoginPage implements OnInit {
       .subscribe({
         next: res => 
         {
+          debugger;
           this.router.navigateByUrl(AppRoutes.TABS);
         },
         error: err =>
