@@ -2,6 +2,14 @@ export enum StorageKeys {
     INSTALL_DATE = 'INSTALL_DATE'
 }
 
+export enum AppRoutes {
+    LOGIN = '/auth/login',
+    REGISTER = '/auth/register',
+    TABS = '/tabs',
+    AUTH = '/auth'
+
+}
+
 export enum ExpenseTypes {
     All,
     Games,

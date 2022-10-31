@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppRoutes } from 'src/app/constants/constants';
 import { AuthService } from '../services/auth/auth.service';
 
 @Component({
@@ -17,7 +19,9 @@ export class RegisterComponent implements OnInit {
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6)])
   })
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router) {
 
    }
 
@@ -32,7 +36,7 @@ export class RegisterComponent implements OnInit {
     .subscribe({
       next: res => 
       {
-        console.log(res);
+        this.router.navigateByUrl(AppRoutes.LOGIN);
       },
       error: err =>
       {
