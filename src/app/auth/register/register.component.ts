@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -16,8 +17,7 @@ export class RegisterComponent implements OnInit {
     confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6)])
   })
 
-  constructor(private fireAuth: AngularFireAuth) {
-    console.log(this.fireAuth.currentUser);
+  constructor(private authService: AuthService) {
 
    }
 
@@ -25,13 +25,19 @@ export class RegisterComponent implements OnInit {
 
   }
 
+  //doRegister
   submitTapped() {
     var values = this.registerForm.value;
-    this.fireAuth.createUserWithEmailAndPassword(values.email, values.password)
-    .then(res => 
+    this.authService.registerWithEmailAndPass(values.email, values.password)
+    .subscribe({
+      next: res => 
       {
         console.log(res);
-      });
+      },
+      error: err =>
+      {
+        console.log(err);
+      }
+    })
   }
-
 }

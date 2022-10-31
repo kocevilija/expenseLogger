@@ -2,10 +2,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-card-header>
-    <ion-card-title class="ion-text-center">Login</ion-card-title>
-  </ion-card-header>
-  <ion-card>
+  <ion-card class="ion-no-margin">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Login</ion-card-title>
+    </ion-card-header>
     <ion-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="loginTapped()">
         <ion-item-group>
@@ -13,7 +13,8 @@
             <ion-input placeholder="Email" formControlName="email" ></ion-input>
           </ion-item>
           <ion-item lines="full">
-            <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
+            <ion-input placeholder="Password" [type]="showPassword ? 'text' : 'password'"  formControlName="password"></ion-input>
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" size="large" (click)="togglePassword()"></ion-icon>
           </ion-item>
         </ion-item-group>
         <ion-button expand="block" type="submit" [disabled]="!loginForm.valid">Login</ion-button>
